@@ -1,0 +1,34 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../build",
+    "devUrl": "http://localhost:1420"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "productName": "Bastion Launcher",
+  "version": "0.1.0",
+  "identifier": "com.bitzmc.bastion-launcher",
+  "plugins": {},
+  "app": {
+    "windows": [
+      {
+        "title": "Bastion Launcher",
+        "width": 800,
+        "height": 500,
+        "minWidth": 700,
+        "minHeight": 450
+      }
+    ]
+  }
+}
