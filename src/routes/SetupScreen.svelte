@@ -1,16 +1,17 @@
-<script>
-  import { ArrowRight } from "svelte-hero-icons";
+<script lang='ts'>
+  import WelcomePage from './WelcomePage.svelte';
+  import ChooseInstall from './ChooseInstall.svelte';
+  import { SetupPage } from './SetupPage';
 
-  import RadialSetupButton from "./RadialSetupButton.svelte";
+  export let page: SetupPage
 </script>
 
-<div class="w-full h-full absolute">
-  <!-- Create a column for centered elements -->
-  <div class="h-full flex flex-col items-center justify-center font-black font-intro">
-    <div class="flex flex-col items-center">
-      <h1 class="text-7xl">Welcome to</h1>
-      <h1 class="text-7xl text-transparent bg-clip-text bg-gradient-to-t from-orange-600 to-orange-300">Bastion Launcher</h1>
+<div class='w-full h-full absolute'>
+  {#if page === SetupPage.Welcome}
+    <WelcomePage />
+  {:else if page === SetupPage.ChooseInstall}
+    <div class='w-full h-full absolute p-14 pt-24'>
+      <ChooseInstall />
     </div>
-    <RadialSetupButton class="absolute top-3/4" label="Next" icon={ArrowRight} />
-  </div>
+  {/if}
 </div>

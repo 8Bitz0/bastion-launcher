@@ -1,15 +1,21 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-// #[tauri::command]
-// fn greet(name: &str) -> String {
-//     format!("Hello, {}! You've been greeted from Rust!", name)
-// }
+use std::sync::Mutex;
+
+mod paths;
+
+#[derive(Default)]
+pub struct AppState {
+  installs: std::sync::Mutex<(Vec<paths::install::InstallPath>, u32)>,
+}
 
 fn main() {
-    tauri::Builder::default()
-        // .invoke_handler(tauri::generate_handler![greet])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+  tauri::Builder::default()
+    .manage(Mutex::new(AppState::default()))
+    .invoke_handler(tauri::generate_handler![
+      paths::install::get_install_paths
+    ])
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }

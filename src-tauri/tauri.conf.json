@@ -26,8 +26,8 @@
         "title": "Bastion Launcher",
         "width": 800,
         "height": 500,
-        "minWidth": 700,
-        "minHeight": 450
+        "minWidth": 800,
+        "minHeight": 500
       }
     ]
   }
