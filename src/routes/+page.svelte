@@ -27,10 +27,11 @@
 
   $: scaleFactor = Math.min(width / 800, height / 500);
 </script>
+
 <div class='w-full h-full font-sans text-slate-200' style='zoom: {scaleFactor}'>
   {#if setupFinished}
     <Home />
   {:else}
-    <SetupScreen page={SetupPage.ChooseInstall} />
+    <SetupScreen onFinish={() => setupFinished = true} />
   {/if}
 </div>
