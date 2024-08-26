@@ -3,7 +3,7 @@
   import { blur } from 'svelte/transition';
 
   import InstallIcon from './InstallIcon.svelte';
-  import { InstallPathType } from './InstallPath';
+  import { InstallPathType } from '../scripts/InstallPath';
 
   let className = '';
 

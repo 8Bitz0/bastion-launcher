@@ -1,6 +1,7 @@
 <script lang='ts'>
   import { ArrowRight } from 'svelte-hero-icons';
 
+  import { type Config, setConfig } from '../scripts/Config';
   import RadialSetupButton from './RadialSetupButton.svelte';
   import WelcomePage from './WelcomePage.svelte';
   import ChooseInstall from './ChooseInstall.svelte';
@@ -8,16 +9,26 @@
 
   export let page: number = 0;
   export let onFinish: () => void;
-
-  let nextButtonActive: boolean;
   let lastPage: number = 1;
 
+  let chosenInstall: string = '';
+  let customInstalls: string[] = [];
+
+  let nextButtonActive: boolean;
   let nextButtonLabel: string;
 
   $: nextButtonLabel = page === lastPage ? 'Finish' : 'Next';
 
   function onNext() {
     if (page === lastPage) {
+      let config: Config = {
+        setupFinished: true,
+        currentInstallPath: chosenInstall,
+        customInstallPaths: customInstalls,
+      };
+
+      setConfig(config);
+
       onFinish();
       return;
     }
@@ -31,7 +42,11 @@
     <WelcomePage changeReadyState={(ready) => nextButtonActive = ready} />
   {:else if page == 1}
     <div class='w-full h-full absolute p-14 pt-24'>
-      <ChooseInstall />
+      <ChooseInstall onUpdate={(selected, custom) => {
+        chosenInstall = selected;
+        customInstalls = custom;
+        }}
+      />
     </div>
   {/if}
 </div>

@@ -2,10 +2,8 @@
   // Prevents duplicate `Icon` component
   import IconifyIcon from '@iconify/svelte';
   
-  import { getInstallPaths } from './InstallPath';
-  import InstallIcon from './InstallIcon.svelte';
+  import { getInstallPaths } from '../scripts/InstallPath';
   import InstallPathEntry from './InstallPathEntry.svelte';
-  import RadialSetupButton from './RadialSetupButton.svelte';
 
   let selectedInstall: number | null = null;
 
@@ -18,6 +16,12 @@
       return [];
     }
   });
+
+  export let onUpdate: (currentInstall: string, custom: string[] ) => void;
+
+  function switchPathChoice(path: string) {
+    onUpdate(path, []);
+  }
 </script>
 
 <h1 class='absolute text-3xl font-bold text-slate-300 -translate-y-12'>Choose Installation</h1>
@@ -35,8 +39,8 @@
           <InstallPathEntry
             active={(i == selectedInstall)}
             label={path.label || path.path}
-            installType={path.path_type}
-            onClick={() => selectedInstall = i}
+            installType={path.type}
+            onClick={() => switchPathChoice(path.path)}
           />
         </div>
       {/each}

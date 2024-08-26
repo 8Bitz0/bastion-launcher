@@ -11,6 +11,7 @@ pub struct InstallPath {
   pub path: PathBuf,
   pub exists: bool,
   pub label: Option<String>,
+  #[serde(rename = "type")]
   pub path_type: InstallPathType,
 }
 
@@ -50,6 +51,8 @@ pub fn setup_install_paths(custom_paths: Option<Vec<PathBuf>>) -> Vec<InstallPat
 }
 
 #[tauri::command]
-pub fn get_install_paths(state: State<'_, Mutex<AppState>>) -> Vec<InstallPath> {
-  setup_install_paths(None)
+pub fn get_install_paths(state: State<'_, AppState>) -> Vec<InstallPath> {
+  let custom = state.config.lock().unwrap().get().custom_install_paths.clone();
+
+  setup_install_paths(Some(custom))
 }

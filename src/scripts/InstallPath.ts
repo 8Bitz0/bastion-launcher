@@ -10,7 +10,7 @@ export interface InstallPath {
   path: string;
   exists: boolean;
   label?: string;
-  path_type: InstallPathType;
+  type: InstallPathType;
 }
 
 export function getInstallPaths(): Promise<InstallPath[]> {

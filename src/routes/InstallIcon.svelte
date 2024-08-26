@@ -1,7 +1,7 @@
 <script lang='ts'>
   import IconifyIcon from '@iconify/svelte';
 
-  import { InstallPathType } from './InstallPath';
+  import { InstallPathType } from '../scripts/InstallPath';
 
   let className = '';
   export let type: InstallPathType;
