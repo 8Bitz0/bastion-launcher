@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/core';
 
 export interface Config {
   setupFinished: boolean;
-  currentInstallPath: string;
+  currentInstallPath?: string;
   customInstallPaths: string[];
 }
 

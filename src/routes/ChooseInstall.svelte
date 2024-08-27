@@ -5,11 +5,14 @@
   import { getInstallPaths } from '../scripts/InstallPath';
   import InstallPathEntry from './InstallPathEntry.svelte';
 
-  let selectedInstall: number | null = null;
+  let selectedInstall: string | null = null;
 
   let installPaths = getInstallPaths().then(paths => {
     if (paths && paths.length > 0) {
-      selectedInstall = 0 ;
+      selectedInstall = paths[0].path;
+
+      // Ensures that the initial install choice is saved
+      onUpdate(selectedInstall, []);
   
       return paths;
     } else {
@@ -20,6 +23,8 @@
   export let onUpdate: (currentInstall: string, custom: string[] ) => void;
 
   function switchPathChoice(path: string) {
+    console.log('Switching to', path);
+
     onUpdate(path, []);
   }
 </script>
@@ -37,7 +42,7 @@
       {#each installPaths as path, i}
         <div class='w-full'>
           <InstallPathEntry
-            active={(i == selectedInstall)}
+            active={(path.path == selectedInstall)}
             label={path.label || path.path}
             installType={path.type}
             onClick={() => switchPathChoice(path.path)}

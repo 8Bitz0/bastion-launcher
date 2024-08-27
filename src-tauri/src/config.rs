@@ -38,7 +38,7 @@ pub struct ConfigInterface {
   pub setup_finished: bool,
   #[serde(rename = "customInstallPaths")]
   pub custom_install_paths: Vec<PathBuf>,
-  #[serde(rename = "currentInstall")]
+  #[serde(rename = "currentInstallPath")]
   pub current_install: Option<PathBuf>,
 }
 
