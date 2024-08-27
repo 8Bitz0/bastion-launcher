@@ -29,11 +29,11 @@
   }
 </script>
 
-<h1 class='absolute text-3xl font-bold text-slate-300 -translate-y-12'>Choose Installation</h1>
 <div class='w-[700px] h-full grid grid-cols-2 gap-8 mx-auto text-slate-300'>
   <!-- Contains large icon on the side -->
-  <div class='h-full p-6'>
-    <IconifyIcon icon='fluent:hard-drive-48-regular' class='mx-auto w-full h-full stroke-[0.2]' />
+  <div class='h-full flex flex-col justify-center items-center -translate-y-8'>
+    <h1 class='text-[28px] font-bold text-slate-300'>Installation</h1>
+    <p class='text-lg'>Required to launch BeamNG.drive</p>
   </div>
   <div class='h-full flex flex-col overflow-x-clip overflow-y-auto p-2 gap-2 scrollbar scrollbar-track-transparent scrollbar-thumb-rounded-full scrollbar-thumb-slate-700 scrollbar-w-2'>
     {#await installPaths}
