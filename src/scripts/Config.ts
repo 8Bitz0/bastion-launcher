@@ -4,7 +4,7 @@ import { LaunchMethod } from './LaunchMethod';
 
 export interface GameSettings {
   console: boolean;
-  gfxApi: string;
+  gfxApi?: string;
 }
 
 export interface Config {
@@ -33,4 +33,11 @@ export function getGameSettings(): Promise<GameSettings> {
 
 export function setGameSettings(settings: GameSettings): Promise<void> {
   return invoke('set_game_settings', { settings: settings });
+}
+
+export function defaultGameSettings(): GameSettings {
+  return {
+    console: false,
+    gfxApi: undefined,
+  };
 }

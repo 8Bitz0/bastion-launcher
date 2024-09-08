@@ -21,27 +21,18 @@ pub enum ConfigError {
   JsonDeserialize(serde_json::Error),
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, Default)]
 pub struct GameSettings {
   pub console: bool,
   #[serde(rename = "gfx-api")]
-  pub gfx_api: String,
-}
-
-impl Default for GameSettings {
-  fn default() -> Self {
-      Self {
-        console: false,
-        gfx_api: "dx11".to_string(),
-      }
-  }
+  pub gfx_api: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct GameSettingsInterface {
   pub console: bool,
   #[serde(rename = "gfxApi")]
-  pub gfx_api: String,
+  pub gfx_api: Option<String>,
 }
 
 impl From<GameSettings> for GameSettingsInterface {
@@ -205,7 +196,9 @@ pub fn get_game_settings(state: tauri::State<'_, crate::AppState>) -> GameSettin
 
   let current_install = match config.current_install.clone() {
     Some(p) => p,
-    None => return GameSettings::default().into(),
+    None => {
+      return GameSettings::default().into();
+    },
   };
 
   match config.game_settings.get(&current_install) {

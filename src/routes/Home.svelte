@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { type Config, type GameSettings, getConfig, getGameSettings, setConfig, setGameSettings } from '../scripts/Config';
+  import { type Config, defaultGameSettings, type GameSettings, getConfig, getGameSettings, setConfig, setGameSettings } from '../scripts/Config';
   import { launch } from '../scripts/Launch';
   import { getLaunchMethods, LaunchMethod } from '../scripts/LaunchMethod';
 
@@ -32,25 +32,23 @@
     getConfig().then((c) => {
       launchMethod = c.launchMethod;
 
-      console.log(c.launchMethod)
-
       // Get the index of the current launch method
       launchMethodIndex = launchMethods.indexOf(launchMethod);
 
-      console.log(launchMethods.indexOf(launchMethod));
-      console.log(launchMethods);
-
       // If the launch method is not found, default to the first one
       if (launchMethodIndex === -1) launchMethodIndex = 0;
-
-      console.log(launchMethodIndex);
     });
   }
 
   processCurrentLaunchMethod();
 
   getGameSettings().then((s) => {
-    gameSettings = s;
+    if (s === undefined) {
+      gameSettings = defaultGameSettings();
+      setGameSettings(gameSettings);
+    } else {
+      gameSettings = s;
+    }
   });
 
   async function launchGame() {
@@ -74,8 +72,9 @@
     additionalSBBGClasses = SB_BG_HIDDEN;
   }
 
-  function updateSettings() {
+  function updateSettings(gameSettings: GameSettings | undefined) {
     if (gameSettings === undefined) {
+      console.error('Game settings are undefined (update skipped)');
       return;
     }
 
@@ -99,6 +98,8 @@
       setConfig(config);
     });
   }
+
+  $: updateSettings(gameSettings);
 
   $: indexLaunchMethod(launchMethodIndex);
 </script>
@@ -127,7 +128,7 @@
       <!-- Waiting -->
     {:else}
       <div class='h-full absolute right-0 transition-all {additionalSBClasses}'>
-        <SettingsSidebar bind:gameSettings updateSettings={updateSettings} onClose={closeSidebar} launchMethod={launchMethod} />
+        <SettingsSidebar bind:gameSettings onClose={closeSidebar} launchMethod={launchMethod} />
       </div>
     {/if}
   </div>

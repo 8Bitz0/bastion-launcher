@@ -10,8 +10,6 @@ export function getLaunchMethods(): Promise<LaunchMethod[]> {
 }
 
 export function supportsGameArgs(method: LaunchMethod): boolean {
-  console.log(method.toString());
-
   switch (method.toString()) {
     case LaunchMethod.Windows:
       return true;

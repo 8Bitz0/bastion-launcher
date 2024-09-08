@@ -8,7 +8,6 @@
   export let onClose: () => void = () => {};
   export let gameSettings: GameSettings;
   export let launchMethod: LaunchMethod;
-  export let updateSettings: () => void = () => {};
 
   export { className as class };
 
@@ -17,8 +16,6 @@
   async function setConsole(state: boolean) {
     console.log(`Console set to ${state ? 'enabled' : 'disabled'}`);
     gameSettings.console = state;
-
-    await updateSettings();
   }
 </script>
 
