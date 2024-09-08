@@ -15,7 +15,7 @@
   let additionalSBClasses: string = SB_HIDDEN;
 
   let launchMethod: LaunchMethod;
-  let gameSettings: GameSettings | undefined = undefined;
+  let gameSettings: GameSettings = defaultGameSettings();
 
   let launchMethods: LaunchMethod[] = [];
   let launchMethodIndex: number = 0;
@@ -42,13 +42,11 @@
 
   processCurrentLaunchMethod();
 
+  // Get the game settings from the config and set variables accordingly
   getGameSettings().then((s) => {
-    if (s === undefined) {
-      gameSettings = defaultGameSettings();
-      setGameSettings(gameSettings);
-    } else {
-      gameSettings = s;
-    }
+    gameSettings = s;
+
+    setGameSettings(gameSettings);
   });
 
   async function launchGame() {
@@ -72,21 +70,20 @@
     additionalSBBGClasses = SB_BG_HIDDEN;
   }
 
-  function updateSettings(gameSettings: GameSettings | undefined) {
-    if (gameSettings === undefined) {
-      console.error('Game settings are undefined (update skipped)');
-      return;
-    }
+  // Requests the game settings and updates the config
+  function updateSettings(newSettings: GameSettings) {
+    console.log(`Game settings updated (${newSettings})`);
 
-    setGameSettings(gameSettings);
+    setGameSettings(newSettings);
   }
 
+  // Matches the launch method enum to the index and updates the config
   function indexLaunchMethod(index: number) {
     if (launchMethods.length === 0) {
       return;
     }
 
-    launchMethod = launchMethods[launchMethodIndex];
+    launchMethod = launchMethods[index];
 
     // Update the config with the new launch method
     getConfig().then((c) => {

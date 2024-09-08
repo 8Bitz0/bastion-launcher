@@ -4,7 +4,10 @@ use tauri::State;
 
 use crate::AppState;
 
+#[cfg(target_os = "windows")]
 const WIN_STEAM_PATH: &str = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\BeamNG.drive";
+#[cfg(target_os = "linux")]
+const LINUX_STEAM_PATH: &str = "$HOME/.steam/steam/steamapps/common/BeamNG.drive";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct InstallPath {
@@ -22,18 +25,34 @@ pub enum InstallPathType {
   Other,
 }
 
+#[cfg(target_os = "linux")]
+fn replace_home(path: &str) -> String {
+  path.replace("$HOME", std::env::var("HOME").unwrap().as_str())
+}
+
 fn default_install_paths() -> Vec<InstallPath> {
+  let mut paths = vec![];
+
   #[cfg(target_os = "windows")]
-  {vec![
-    InstallPath {
+  {
+    paths.push(InstallPath {
       path: PathBuf::from(WIN_STEAM_PATH),
       exists: PathBuf::from(WIN_STEAM_PATH).is_dir(),
       label: Some("Steam".to_string()),
       path_type: InstallPathType::Steam,
-    },
-  ]}
-  #[cfg(not(target_os = "windows"))]
-  vec![todo!()]
+    });
+  }
+  #[cfg(target_os = "linux")]
+  {
+    paths.push(InstallPath {
+      path: PathBuf::from(replace_home(LINUX_STEAM_PATH)),
+      exists: PathBuf::from(replace_home(LINUX_STEAM_PATH)).is_dir(),
+      label: Some("Steam".to_string()),
+      path_type: InstallPathType::Steam,
+    });
+  }
+
+  paths
 }
 
 pub fn setup_install_paths(custom_paths: Option<Vec<PathBuf>>) -> Vec<InstallPath> {

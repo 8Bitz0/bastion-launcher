@@ -4,6 +4,7 @@
 
 :root {
   overflow: hidden;
+  cursor: default;
   font-synthesis: weight;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

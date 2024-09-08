@@ -20,22 +20,26 @@
   let methodDropdownEntries: DropdownEntry[] = [];
 
   function getMethodLabel(method: LaunchMethod): string {
-    switch (method.toString()) {
+    switch (method) {
       case LaunchMethod.Windows:
         return 'Windows';
       case LaunchMethod.WindowsLauncher:
         return 'Windows (Launcher)';
+      case LaunchMethod.Linux:
+        return 'Linux';
       default:
         return 'Unknown';
     }
   }
 
   function getMethodSubtitle(method: LaunchMethod): string | undefined {
-    switch (method.toString()) {
+    switch (method) {
       case LaunchMethod.Windows:
         return 'Launch the game directly';
       case LaunchMethod.WindowsLauncher:
         return 'Launch via the game\'s launcher';
+      case LaunchMethod.Linux:
+        return 'Launch the game directly';
       default:
         return undefined;
     }
@@ -63,6 +67,6 @@
   {/if}
   <div class='flex-grow' />
   <button on:click={onSettings} class='w-14 h-14 bg-slate-800 text-slate-300 rounded-lg duration-150 hover:bg-slate-300 hover:text-slate-800 hover:duration-150 active:scale-95 cursor-pointer'>
-    <IconifyIcon icon='mdi:settings' class='h-full w-9 mx-auto' />
+    <IconifyIcon icon='mdi:wrench' class='h-full w-8 mx-auto' />
   </button>
 </div>

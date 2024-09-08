@@ -52,7 +52,7 @@
       {#if installPaths.length == 0}
         <p class='text-center text-slate-500 font-bold'>No installations found</p>
       {/if}
-      <hr class='border-0 h-[2px] border-slate-800 bg-gradient-to-r from-transparent via-slate-800 to-transparent'>
+      <hr class='border-0 h-[2px] border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900'>
       <button class='text-left cursor-default'>
         <div class='flex flex-row gap-2 w-full p-2 pl-3 items-center text-slate-400 bg-slate-800 hover:bg-slate-700 hover:text-slate-300 hover:scale-[1.02] duration-100 hover:duration-100 active:scale-[0.98] active:ease-out rounded-lg'>
           <IconifyIcon icon='mdi:plus' class='h-full w-8' />

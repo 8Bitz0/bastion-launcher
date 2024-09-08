@@ -16,12 +16,12 @@
     open = false;
   }
 
-  $: addArrowClasses = open ? '' : 'ar-active';
+  $: addArrowClasses = open ? '' : 'arr-active';
   $: addDropdownClasses = open ? '' : 'dd-hidden';
 </script>
 
 <style>
-  .ar-active {
+  .arr-active {
     transform: rotate(180deg);
   }
 
@@ -46,7 +46,9 @@
   >
     {#if entries.length > 0}
       <p class='text-slate-300 flex-grow'>{entries[index].label}</p>
-      <Icon icon='mdi:chevron-down' class='w-6 h-6 text-slate-300 transition-all {addArrowClasses}' />
+      <div class='w-6 h-6 text-slate-300 transition-all {addArrowClasses}'>
+        <Icon icon='mdi:chevron-down' class='w-full h-full' />
+      </div>
     {:else}
       <p class='text-center text-slate-500 font-bold'>Loading...</p>
     {/if}

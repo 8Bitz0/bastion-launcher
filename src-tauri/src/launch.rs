@@ -9,6 +9,8 @@ pub enum LaunchMethod {
   Windows,
   #[serde(rename = "windows-launcher")]
   WindowsLauncher,
+  #[serde(rename = "linux")]
+  Linux,
 }
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum LaunchMethodInterface {
@@ -16,6 +18,8 @@ pub enum LaunchMethodInterface {
   Windows,
   #[serde(rename = "windows-launcher")]
   WindowsLauncher,
+  #[serde(rename = "linux")]
+  Linux,
 }
 
 impl From<LaunchMethod> for LaunchMethodInterface {
@@ -23,6 +27,7 @@ impl From<LaunchMethod> for LaunchMethodInterface {
     match value {
       LaunchMethod::Windows => LaunchMethodInterface::Windows,
       LaunchMethod::WindowsLauncher => LaunchMethodInterface::WindowsLauncher,
+      LaunchMethod::Linux => LaunchMethodInterface::Linux,
     }
   }
 }
@@ -32,6 +37,7 @@ impl From<LaunchMethodInterface> for LaunchMethod {
     match value {
       LaunchMethodInterface::Windows => LaunchMethod::Windows,
       LaunchMethodInterface::WindowsLauncher => LaunchMethod::WindowsLauncher,
+      LaunchMethodInterface::Linux => LaunchMethod::Linux,
     }
   }
 }
@@ -50,7 +56,10 @@ impl Default for LaunchMethodInterface {
 
 #[tauri::command]
 pub fn get_launch_methods() -> Vec<LaunchMethod> {
-  vec![LaunchMethod::Windows, LaunchMethod::WindowsLauncher]
+  #[cfg(target_os = "windows")]
+  {vec![LaunchMethod::Windows, LaunchMethod::WindowsLauncher]}
+  #[cfg(target_os = "linux")]
+  {vec![LaunchMethod::Linux]}
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -102,6 +111,12 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
     },
     LaunchMethod::WindowsLauncher => ExecMethod::WindowsIndirect {
       install,
+    },
+    LaunchMethod::Linux => ExecMethod::Linux {
+      install,
+      args: bastion::LinuxArgs {
+        gfx_api: None,
+      },
     },
   };
 

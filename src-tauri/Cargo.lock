@@ -270,7 +270,7 @@ checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 [[package]]
 name = "bastion"
 version = "0.1.0"
-source = "git+https://github.com/8Bitz0/bastion.git?branch=main#47e02e88dab3841aa56ac8b790a88c74061f1c61"
+source = "git+https://github.com/8Bitz0/bastion.git?rev=71daa92bf8aa7cc7697e37968db2ed23c373551d#71daa92bf8aa7cc7697e37968db2ed23c373551d"
 dependencies = [
  "thiserror",
 ]
