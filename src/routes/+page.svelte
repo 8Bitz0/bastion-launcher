@@ -1,5 +1,6 @@
 <script lang='ts'>
   import { onMount } from 'svelte';
+
   import '../app.css';
   import { getConfig, loadConfig } from '../scripts/Config';
 
@@ -39,7 +40,7 @@
   init().then(() => {console.log('Init finished')});
 </script>
 
-<div class='w-full h-full font-sans text-slate-200' style='zoom: {scaleFactor}'>
+<div class='w-full h-full font-sans text-slate-200 overflow-hidden' style='zoom: {scaleFactor}'>
   {#if loadingFinished}
     {#if setupFinished}
       <Home />

@@ -4,6 +4,7 @@
 use std::sync::Mutex;
 
 mod config;
+mod gfx_api;
 mod launch;
 mod paths;
 
@@ -20,6 +21,10 @@ fn main() {
       config::load_config,
       config::get_config,
       config::set_config,
+      config::get_game_settings,
+      config::set_game_settings,
+      gfx_api::get_gfx_apis,
+      launch::get_launch_methods,
       launch::launch,
       paths::install::get_install_paths,
     ])

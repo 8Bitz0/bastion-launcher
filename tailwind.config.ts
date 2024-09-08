@@ -8,7 +8,7 @@ export default {
     extend: {
       fontFamily: {
         intro: 'Roboto, sans-serif',
-        sans: 'sans-serif',
+        sans: 'Roboto, sans-serif',
       },
     }
   },

@@ -1,6 +1,5 @@
 <script lang='ts'>
   import IconifyIcon from '@iconify/svelte';
-  import { blur } from 'svelte/transition';
 
   import InstallIcon from './InstallIcon.svelte';
   import { InstallPathType } from '../scripts/InstallPath';

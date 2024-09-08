@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { Icon, type IconSource } from 'svelte-hero-icons';
+  import { Icon } from 'svelte-hero-icons';
 
   let className: string = '';
   export let active: boolean;

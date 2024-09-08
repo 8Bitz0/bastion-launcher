@@ -1,11 +1,10 @@
 <script lang='ts'>
   import { ArrowRight } from 'svelte-hero-icons';
 
-  import { type Config, setConfig } from '../scripts/Config';
+  import { type Config, type GameSettings, getConfig, setConfig } from '../scripts/Config';
   import RadialSetupButton from './RadialSetupButton.svelte';
   import WelcomePage from './WelcomePage.svelte';
   import ChooseInstall from './ChooseInstall.svelte';
-  import { SetupPage } from './SetupPage';
 
   export let page: number = 0;
   export let onFinish: () => void;
@@ -19,12 +18,16 @@
 
   $: nextButtonLabel = page === lastPage ? 'Finish' : 'Next';
 
-  function onNext() {
+  async function onNext() {
     if (page === lastPage) {
+      let preConfig: Config = await getConfig();
+
       let config: Config = {
         setupFinished: true,
         currentInstallPath: chosenInstall,
         customInstallPaths: customInstalls,
+        gameSettings: {} as Record<string, GameSettings>,
+        launchMethod: preConfig.launchMethod,
       };
 
       setConfig(config);

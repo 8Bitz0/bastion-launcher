@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read, Write};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
-use crate::paths::install::InstallPath;
+use crate::launch::{LaunchMethod, LaunchMethodInterface};
 
 const CONFIG_DIR_NAME: &str = "Bastion Launcher";
 const CONFIG_FILE_NAME: &str = "config.json";
@@ -20,6 +21,47 @@ pub enum ConfigError {
   JsonDeserialize(serde_json::Error),
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GameSettings {
+  pub console: bool,
+  #[serde(rename = "gfx-api")]
+  pub gfx_api: String,
+}
+
+impl Default for GameSettings {
+  fn default() -> Self {
+      Self {
+        console: false,
+        gfx_api: "dx11".to_string(),
+      }
+  }
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GameSettingsInterface {
+  pub console: bool,
+  #[serde(rename = "gfxApi")]
+  pub gfx_api: String,
+}
+
+impl From<GameSettings> for GameSettingsInterface {
+  fn from(value: GameSettings) -> Self {
+    Self {
+      console: value.console,
+      gfx_api: value.gfx_api,
+    }
+  }
+}
+
+impl From<GameSettingsInterface> for GameSettings {
+  fn from(value: GameSettingsInterface) -> Self {
+    Self {
+      console: value.console,
+      gfx_api: value.gfx_api,
+    }
+  }
+}
+
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Config {
   #[serde(rename = "setup-finished")]
@@ -28,6 +70,10 @@ pub struct Config {
   pub custom_install_paths: Vec<PathBuf>,
   #[serde(rename = "current-install")]
   pub current_install: Option<PathBuf>,
+  #[serde(rename = "game-settings")]
+  pub game_settings: HashMap<PathBuf, GameSettings>,
+  #[serde(rename = "launch-method")]
+  pub launch_method: LaunchMethod,
 }
 
 /// Uses serde names identical to those in the frontend, otherwise
@@ -40,6 +86,10 @@ pub struct ConfigInterface {
   pub custom_install_paths: Vec<PathBuf>,
   #[serde(rename = "currentInstallPath")]
   pub current_install: Option<PathBuf>,
+  #[serde(rename = "gameSettings")]
+  pub game_settings: HashMap<PathBuf, GameSettingsInterface>,
+  #[serde(rename = "launchMethod")]
+  pub launch_method: LaunchMethodInterface,
 }
 
 impl From<Config> for ConfigInterface {
@@ -48,6 +98,8 @@ impl From<Config> for ConfigInterface {
       setup_finished: value.setup_finished,
       current_install: value.current_install,
       custom_install_paths: value.custom_install_paths,
+      game_settings: value.game_settings.iter().map(|(k, v)| (k.clone(), v.clone().into())).collect(),
+      launch_method: value.launch_method.into(),
     }
   }
 }
@@ -58,6 +110,8 @@ impl From<ConfigInterface> for Config {
       setup_finished: value.setup_finished,
       current_install: value.current_install,
       custom_install_paths: value.custom_install_paths,
+      game_settings: value.game_settings.iter().map(|(k, v)| (k.clone(), v.clone().into())).collect(),
+      launch_method: value.launch_method.into(),
     }
   }
 }
@@ -68,7 +122,7 @@ pub struct ConfigManager {
   config: Config,
 }
 
-impl std::default::Default for ConfigManager {
+impl Default for ConfigManager {
   fn default() -> Self {
     Self {
       path: dirs::config_local_dir().unwrap().join(CONFIG_DIR_NAME),
@@ -140,6 +194,39 @@ pub fn set_config(state: tauri::State<'_, crate::AppState>, config: ConfigInterf
 
   config_state.set(config.into());
   config_state.update().map_err(|e| e.to_string())?;
+
+  Ok(())
+}
+
+#[tauri::command]
+pub fn get_game_settings(state: tauri::State<'_, crate::AppState>) -> GameSettingsInterface {
+  let config_lock = state.config.lock().unwrap();
+  let config = config_lock.get();
+
+  let current_install = match config.current_install.clone() {
+    Some(p) => p,
+    None => return GameSettings::default().into(),
+  };
+
+  match config.game_settings.get(&current_install) {
+    Some(settings) => settings.clone().into(),
+    None => GameSettings::default().into(),
+  }
+}
+
+#[tauri::command]
+pub fn set_game_settings(state: tauri::State<'_, crate::AppState>, settings: GameSettingsInterface) -> Result<(), String> {
+  let mut config_lock = state.config.lock().unwrap();
+  let mut config = config_lock.get().clone();
+
+  let current_install = match config.current_install.clone() {
+    Some(p) => p,
+    None => return Err("No install path is currently set".to_string()),
+  };
+
+  config.game_settings.insert(current_install, settings.into());
+  config_lock.set(config);
+  config_lock.update().map_err(|e| e.to_string())?;
 
   Ok(())
 }

@@ -18,9 +18,7 @@ tauri-plugin-dialog = "2.0.0-rc.2"
 tauri-plugin-shell = "2.0.0-rc"
 dirs = "5.0.1"
 thiserror = "1.0.63"
-
 bastion = { git = "https://github.com/8Bitz0/bastion.git", branch = "main", commit = "47e02e8" }
-tokio = { version = "1.39.3", features = ["macros", "sync"] }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

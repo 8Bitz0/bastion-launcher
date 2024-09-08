@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  overflow: hidden;
   font-synthesis: weight;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
