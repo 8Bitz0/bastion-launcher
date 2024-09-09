@@ -30,7 +30,7 @@
     let postScaleDifference = 0;
 
     if (width > 1000 || height > 625) {
-      postScaleDifference = -0.5;
+      postScaleDifference = -0.25;
     }
 
     return scaleFactor + postScaleDifference;
