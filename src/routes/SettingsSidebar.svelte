@@ -15,6 +15,7 @@
 
   let rendererIndex: number = 0;
   let rendererEntries: { label: string }[] = [];
+  let renderers: GfxApi[];
 
   $: gameSettingsSupport = supportsGameArgs(launchMethod);
   $: rendererEntries = getRenderers(launchMethod);
@@ -24,21 +25,31 @@
   function getInitialRenderer(gameSettings: GameSettings) {
     let api = gameSettings.gfxApi;
 
+    let newIndex: number;
+
     if (api === GfxApi.Dx11) {
-      rendererIndex = 1;
+      newIndex = renderers.indexOf(GfxApi.Dx11) + 1;
     } else if (api === GfxApi.Vulkan) {
-      rendererIndex = 2;
+      newIndex = renderers.indexOf(GfxApi.Vulkan) + 1;
     } else {
-      rendererIndex = 0;
+      newIndex = 0;
     }
+
+    if (newIndex === -1) {
+      newIndex = 0;
+    }
+
+    rendererIndex = newIndex;
   }
 
   function getRenderers(launchMethod: LaunchMethod): { label: string }[] {
+    renderers = getGfxApis(launchMethod);
+
     let newEntries: { label: string }[] = [];
 
     newEntries.push({ label: 'Default' });
 
-    for (let api of getGfxApis(launchMethod)) {
+    for (let api of renderers) {
       let label: string;
 
       if (api === GfxApi.Dx11) {
@@ -58,12 +69,13 @@
   function setRenderer(index: number) {
     let api: GfxApi | undefined;
 
-    if (index === 1) {
-      api = GfxApi.Dx11;
-    } else if (index === 2) {
-      api = GfxApi.Vulkan;
-    } else {
+    console.log(`Setting renderer to index ${index} which is label ${rendererEntries[index].label} and renderer ${renderers[index - 1]}`);
+
+    if (index === 0) {
       api = undefined;
+    } else {
+      // Subtract 1 to account for the "Default" entry
+      api = renderers[index - 1];
     }
 
     console.log(`Renderer set to ${api}`);
