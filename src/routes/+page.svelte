@@ -25,7 +25,18 @@
     };
   });
 
-  $: scaleFactor = Math.min(width / 800, height / 500);
+  function processScaleFactor(width: number, height: number): number {
+    let scaleFactor = Math.min(width / 800, height / 500)
+    let postScaleDifference = 0;
+
+    if (width > 1000 || height > 625) {
+      postScaleDifference = -0.5;
+    }
+
+    return scaleFactor + postScaleDifference;
+  }
+
+  $: scaleFactor = processScaleFactor(width, height);
 
   let setupFinished = false;
 
