@@ -28,12 +28,7 @@
   .dd-hidden {
     opacity: 0;
     visibility: hidden;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .dd-hidden {
-      transform: translate(0, 10px);
-    }
+    transform: translate(0, 10px);
   }
 </style>
 

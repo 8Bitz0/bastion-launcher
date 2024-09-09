@@ -109,12 +109,7 @@
 
   .sb-hidden {
     opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .sb-hidden {
-      transform: translate(128px, 0);
-    }
+    transform: translate(128px, 0);
   }
 </style>
 
