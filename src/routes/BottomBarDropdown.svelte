@@ -11,7 +11,7 @@
 
   export { className as class };
 
-  function changeMethod(i: number) {
+  function changeChoice(i: number) {
     index = i;
     open = false;
   }
@@ -58,7 +58,7 @@
     {#each entries as entry, i}
       <button
         class='w-52 h-16 flex flex-row items-center bg-white bg-opacity-0 rounded-lg text-left text-nowrap p-2 transition-all hover:bg-opacity-10 hover:transition-all cursor-pointer'
-        on:click={() => changeMethod(i)}
+        on:click={() => changeChoice(i)}
       >
         <div>
           <p class='text-slate-300 flex-grow'>{entry.label}</p>

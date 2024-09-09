@@ -106,7 +106,7 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
       install,
       args: bastion::CommonArgs {
         console: game_settings.console,
-        gfx_api: None,
+        gfx_api: game_settings.gfx_api,
       },
     },
     LaunchMethod::WindowsLauncher => ExecMethod::WindowsIndirect {
@@ -115,7 +115,7 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
     LaunchMethod::Linux => ExecMethod::Linux {
       install,
       args: bastion::LinuxArgs {
-        gfx_api: None,
+        gfx_api: game_settings.gfx_api,
       },
     },
   };
