@@ -13,6 +13,7 @@
   const SB_HIDDEN: string = 'sb-hidden';
   let additionalSBBGClasses: string = SB_BG_HIDDEN;
   let additionalSBClasses: string = SB_HIDDEN;
+  let open: boolean = false;
 
   let launchMethod: LaunchMethod;
   let gameSettings: GameSettings = defaultGameSettings();
@@ -60,15 +61,8 @@
     currentState = ButtonState.Ready;
   }
 
-  function openSidebar() {
-    additionalSBClasses = '';
-    additionalSBBGClasses = '';
-  }
-
-  function closeSidebar() {
-    additionalSBClasses = SB_HIDDEN;
-    additionalSBBGClasses = SB_BG_HIDDEN;
-  }
+  $: additionalSBClasses = open ? '' : SB_HIDDEN;
+  $: additionalSBBGClasses = open ? '' : SB_BG_HIDDEN;
 
   // Requests the game settings and updates the config
   function updateSettings(newSettings: GameSettings) {
@@ -114,13 +108,13 @@
 </style>
 
 <div class='overflow-hidden'>
-  <BottomBar bind:currentMethod={launchMethodIndex} onLaunch={launchGame} onSettings={openSidebar} currentState={currentState} launchMethods={launchMethods} class='absolute bottom-0' />
+  <BottomBar bind:currentMethod={launchMethodIndex} onLaunch={launchGame} onSettings={() => open = true} currentState={currentState} launchMethods={launchMethods} class='absolute bottom-0' />
   <div class='absolute w-full h-full bg-[#00000030] backdrop-blur-2xl transition-all {additionalSBBGClasses}'>
     {#if gameSettings === undefined}
       <!-- Waiting -->
     {:else}
       <div class='h-full absolute right-0 transition-all {additionalSBClasses}'>
-        <SettingsSidebar bind:gameSettings onClose={closeSidebar} launchMethod={launchMethod} />
+        <SettingsSidebar bind:gameSettings onClose={() => open = false} launchMethod={launchMethod} />
       </div>
     {/if}
   </div>

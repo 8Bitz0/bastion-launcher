@@ -57,6 +57,9 @@
         {/if}
       </button>
 
+      {#if open}
+        <div on:click={() => open = false} role='none' class='fixed inset-0'></div>
+      {/if}
       <div class='block w-28 bg-slate-700 drop-shadow-2xl rounded-lg transition-all {addDropdownClasses}'>
         {#each entries as entry, i}
           <button

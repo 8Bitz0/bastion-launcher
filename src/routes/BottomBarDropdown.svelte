@@ -1,5 +1,6 @@
 <script lang='ts'>
   import Icon from '@iconify/svelte';
+  import { onDestroy, onMount } from 'svelte';
 
   import { type DropdownEntry } from "./DropdownEntry";
 
@@ -49,7 +50,10 @@
     {/if}
   </button>
 
-  <div class='block w-full bg-slate-800 drop-shadow-2xl rounded-lg transition-all {addDropdownClasses}'>
+  {#if open}
+    <div on:click={() => open = false} class='fixed inset-0'></div>
+  {/if}
+  <div class='block w-full bg-slate-800 drop-shadow-2xl rounded-lg transition-all dropdown-container {addDropdownClasses}'>
     {#each entries as entry, i}
       <button
         class='w-52 h-16 flex flex-row items-center bg-white bg-opacity-0 rounded-lg text-left text-nowrap p-2 transition-all hover:bg-opacity-10 hover:transition-all cursor-pointer'
