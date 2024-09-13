@@ -60,6 +60,8 @@ pub fn get_launch_methods() -> Vec<LaunchMethod> {
   {vec![LaunchMethod::Windows, LaunchMethod::WindowsLauncher]}
   #[cfg(target_os = "linux")]
   {vec![LaunchMethod::Linux]}
+  #[cfg(target_os = "macos")]
+  {vec![]}
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

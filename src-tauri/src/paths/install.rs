@@ -30,6 +30,8 @@ fn replace_home(path: &str) -> String {
   path.replace("$HOME", std::env::var("HOME").unwrap().as_str())
 }
 
+
+#[allow(unused_mut)]
 fn default_install_paths() -> Vec<InstallPath> {
   let mut paths = vec![];
 

@@ -11,8 +11,6 @@ const CONFIG_FILE_NAME: &str = "config.json";
 
 #[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
-  #[error("Unable to determine config directory")]
-  ConfigDir,
   #[error("Unable to create config directory ({0}): {1}")]
   Config(PathBuf, std::io::Error),
   #[error("Filesystem error ({0}): {1}")]
