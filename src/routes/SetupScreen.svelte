@@ -13,7 +13,7 @@
   let chosenInstall: string = '';
   let customInstalls: string[] = [];
 
-  let nextButtonActive: boolean;
+  let nextButtonActive: boolean = false;
   let nextButtonLabel: string;
 
   $: nextButtonLabel = page === lastPage ? 'Finish' : 'Next';
@@ -45,7 +45,7 @@
     <WelcomePage changeReadyState={(ready) => nextButtonActive = ready} />
   {:else if page == 1}
     <div class='w-full h-full absolute p-14 pt-24'>
-      <ChooseInstall onUpdate={(selected, custom) => {
+      <ChooseInstall changeReadyState={(ready) => { nextButtonActive = ready }} onUpdate={(selected, custom) => {
         chosenInstall = selected;
         customInstalls = custom;
         }}

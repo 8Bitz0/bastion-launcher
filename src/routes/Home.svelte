@@ -109,7 +109,7 @@
 
 <div class='overflow-hidden'>
   <BottomBar bind:currentMethod={launchMethodIndex} onLaunch={launchGame} onSettings={() => open = true} currentState={currentState} launchMethods={launchMethods} class='absolute bottom-0' />
-  <div class='absolute w-full h-full bg-[#00000030] backdrop-blur-2xl transition-all {additionalSBBGClasses}'>
+  <div class='absolute w-full h-full bg-black bg-opacity-30 backdrop-blur-2xl transition-all {additionalSBBGClasses}'>
     {#if gameSettings === undefined}
       <!-- Waiting -->
     {:else}

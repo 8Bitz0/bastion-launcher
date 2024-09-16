@@ -1,0 +1,12 @@
+{
+    "identifier": "ui",
+    "description": "UI capabilities",
+    "local": true,
+    "windows": [
+      "main"
+    ],
+    "permissions": [
+      "dialog:allow-open"
+    ]
+  }
+  

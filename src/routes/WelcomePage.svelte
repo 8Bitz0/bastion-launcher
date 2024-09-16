@@ -1,8 +1,4 @@
 <script lang='ts'>
-  import { ArrowRight } from 'svelte-hero-icons';
-
-  import RadialSetupButton from './RadialSetupButton.svelte';
-
   export let changeReadyState: (ready: boolean) => void;
 
   changeReadyState(true);
