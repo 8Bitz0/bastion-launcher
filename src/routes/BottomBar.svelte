@@ -27,8 +27,12 @@
         return 'Windows (Launcher)';
       case LaunchMethod.Linux:
         return 'Linux';
+      case LaunchMethod.MacGPTK:
+        return 'GPTK';
+      case LaunchMethod.MacGPTKLauncher:
+        return 'GPTK (Launcher)';
       default:
-        return 'Unknown';
+        return method;
     }
   }
 
@@ -39,7 +43,11 @@
       case LaunchMethod.WindowsLauncher:
         return 'Launch via the game\'s launcher';
       case LaunchMethod.Linux:
-        return 'Launch the game directly';
+        return 'Launch the game directly via the Linux binary';
+      case LaunchMethod.MacGPTK:
+        return 'Launch the game directly with Game Porting Toolkit';
+      case LaunchMethod.MacGPTKLauncher:
+        return 'Launch the game\'s launcher with Game Porting Toolkit';
       default:
         return undefined;
     }

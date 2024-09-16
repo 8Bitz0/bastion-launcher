@@ -11,6 +11,10 @@ pub enum LaunchMethod {
   WindowsLauncher,
   #[serde(rename = "linux")]
   Linux,
+  #[serde(rename = "mac-gptk")]
+  MacGPTK,
+  #[serde(rename = "mac-gptk-launcher")]
+  MacGPTKLauncher,
 }
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum LaunchMethodInterface {
@@ -20,6 +24,10 @@ pub enum LaunchMethodInterface {
   WindowsLauncher,
   #[serde(rename = "linux")]
   Linux,
+  #[serde(rename = "mac-gptk")]
+  MacGPTK,
+  #[serde(rename = "mac-gptk-launcher")]
+  MacGPTKLauncher,
 }
 
 impl From<LaunchMethod> for LaunchMethodInterface {
@@ -28,6 +36,8 @@ impl From<LaunchMethod> for LaunchMethodInterface {
       LaunchMethod::Windows => LaunchMethodInterface::Windows,
       LaunchMethod::WindowsLauncher => LaunchMethodInterface::WindowsLauncher,
       LaunchMethod::Linux => LaunchMethodInterface::Linux,
+      LaunchMethod::MacGPTK => LaunchMethodInterface::MacGPTK,
+      LaunchMethod::MacGPTKLauncher => LaunchMethodInterface::MacGPTKLauncher,
     }
   }
 }
@@ -38,6 +48,8 @@ impl From<LaunchMethodInterface> for LaunchMethod {
       LaunchMethodInterface::Windows => LaunchMethod::Windows,
       LaunchMethodInterface::WindowsLauncher => LaunchMethod::WindowsLauncher,
       LaunchMethodInterface::Linux => LaunchMethod::Linux,
+      LaunchMethodInterface::MacGPTK => LaunchMethod::MacGPTK,
+      LaunchMethodInterface::MacGPTKLauncher => LaunchMethod::MacGPTKLauncher,
     }
   }
 }
@@ -61,7 +73,7 @@ pub fn get_launch_methods() -> Vec<LaunchMethod> {
   #[cfg(target_os = "linux")]
   {vec![LaunchMethod::Linux]}
   #[cfg(target_os = "macos")]
-  {vec![]}
+  {vec![LaunchMethod::MacGPTK, LaunchMethod::MacGPTKLauncher]}
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -91,6 +103,7 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
   let install = bastion::BeamNGInstall::init(&path);
 
   let game_settings_map = state.config.lock().unwrap().get().game_settings.clone();
+  let compat_tool_path = state.config.lock().unwrap().get().compat_tool_path.clone();
 
   let game_settings = match game_settings_map.get(&path) {
     Some(s) => s.clone(),
@@ -98,7 +111,7 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
       app.dialog()
         .message("No game settings are currently set")
         .title("Launch Error")
-        .show(|_| {});
+        .blocking_show();
       return Err("No game settings are currently set".to_string())
     },
   };
@@ -119,6 +132,43 @@ pub async fn launch(app: tauri::AppHandle, state: tauri::State<'_, crate::AppSta
       args: bastion::LinuxArgs {
         gfx_api: game_settings.gfx_api,
       },
+    },
+    LaunchMethod::MacGPTK => {
+      let gptk_path = if let Some(p) = compat_tool_path {
+        println!("Using GPTK path: {:?}", p);
+        p
+      } else {
+        app.dialog()
+          .message("No Game Porting Toolkit path is currently set")
+          .title("Launch Error")
+          .blocking_show();
+        return Err("No Game Porting Toolkit path is currently set".to_string())
+      };
+
+      ExecMethod::MacGPTK {
+        install,
+        args: bastion::CommonArgs {
+          console: game_settings.console,
+          gfx_api: game_settings.gfx_api,
+        },
+        gptk_path,
+      }
+    },
+    LaunchMethod::MacGPTKLauncher => {
+      let gptk_path = if let Some(p) = compat_tool_path {
+        p
+      } else {
+        app.dialog()
+          .message("No Game Porting Toolkit path is currently set")
+          .title("Launch Error")
+          .blocking_show();
+        return Err("No Game Porting Toolkit path is currently set".to_string())
+      };
+
+      ExecMethod::MacGPTKIndirect {
+        install,
+        gptk_path,
+      }
     },
   };
 

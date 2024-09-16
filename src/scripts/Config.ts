@@ -13,6 +13,7 @@ export interface Config {
   customInstallPaths: string[];
   gameSettings: Record<string, GameSettings>;
   launchMethod: LaunchMethod;
+  compatToolPath: string | null;
 }
 
 export function loadConfig(): Promise<Config> {

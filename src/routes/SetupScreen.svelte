@@ -1,17 +1,29 @@
 <script lang='ts'>
   import { ArrowRight } from 'svelte-hero-icons';
 
+  import { useGPTK } from '../scripts/Compat';
   import { type Config, type GameSettings, getConfig, setConfig } from '../scripts/Config';
   import RadialSetupButton from './RadialSetupButton.svelte';
   import WelcomePage from './WelcomePage.svelte';
   import ChooseInstall from './ChooseInstall.svelte';
+  import SetupCompatTool from './SetupCompatTool.svelte';
 
   export let page: number = 0;
   export let onFinish: () => void;
   let lastPage: number = 1;
 
+  let compatPage: boolean = false;
+
+  useGPTK().then((compat) => {
+    compatPage = compat;
+    if (compat) {
+      lastPage += 1;
+    }
+  });
+
   let chosenInstall: string = '';
   let customInstalls: string[] = [];
+  let chosenCompatTool: string | null = null;
 
   let nextButtonActive: boolean = false;
   let nextButtonLabel: string;
@@ -28,6 +40,7 @@
         customInstallPaths: customInstalls,
         gameSettings: {} as Record<string, GameSettings>,
         launchMethod: preConfig.launchMethod,
+        compatToolPath: chosenCompatTool,
       };
 
       setConfig(config);
@@ -49,6 +62,13 @@
         chosenInstall = selected;
         customInstalls = custom;
         }}
+      />
+    </div>
+  {:else if page == 2 && compatPage}
+    <div class='w-full h-full absolute p-14 pt-24'>
+      <SetupCompatTool changeReadyState={(ready) => { nextButtonActive = ready }} onUpdate={(compatToolPath) => {
+        chosenCompatTool = compatToolPath
+      }}
       />
     </div>
   {/if}

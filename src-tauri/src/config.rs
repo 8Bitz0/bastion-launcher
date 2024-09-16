@@ -63,6 +63,8 @@ pub struct Config {
   pub game_settings: HashMap<PathBuf, GameSettings>,
   #[serde(rename = "launch-method")]
   pub launch_method: LaunchMethod,
+  #[serde(rename = "compat-tool-path")]
+  pub compat_tool_path: Option<PathBuf>,
 }
 
 /// Uses serde names identical to those in the frontend, otherwise
@@ -79,6 +81,8 @@ pub struct ConfigInterface {
   pub game_settings: HashMap<PathBuf, GameSettingsInterface>,
   #[serde(rename = "launchMethod")]
   pub launch_method: LaunchMethodInterface,
+  #[serde(rename = "compatToolPath")]
+  pub compat_tool_path: Option<PathBuf>,
 }
 
 impl From<Config> for ConfigInterface {
@@ -89,6 +93,7 @@ impl From<Config> for ConfigInterface {
       custom_install_paths: value.custom_install_paths,
       game_settings: value.game_settings.iter().map(|(k, v)| (k.clone(), v.clone().into())).collect(),
       launch_method: value.launch_method.into(),
+      compat_tool_path: value.compat_tool_path,
     }
   }
 }
@@ -101,6 +106,7 @@ impl From<ConfigInterface> for Config {
       custom_install_paths: value.custom_install_paths,
       game_settings: value.game_settings.iter().map(|(k, v)| (k.clone(), v.clone().into())).collect(),
       launch_method: value.launch_method.into(),
+      compat_tool_path: value.compat_tool_path,
     }
   }
 }

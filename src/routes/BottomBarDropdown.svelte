@@ -62,7 +62,7 @@
         <div>
           <p class='text-slate-300 flex-grow'>{entry.label}</p>
           {#if entry.subtitle !== undefined}
-            <p class='text-slate-400 text-xs font-light'>{entry.subtitle}</p>
+            <p class='text-slate-400 text-xs font-light text-wrap'>{entry.subtitle}</p>
           {/if}
         </div>
       </button>

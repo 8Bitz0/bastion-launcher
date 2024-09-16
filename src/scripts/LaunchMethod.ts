@@ -4,6 +4,8 @@ export enum LaunchMethod {
   Windows = "windows",
   WindowsLauncher = "windows-launcher",
   Linux = "linux",
+  MacGPTK = "mac-gptk",
+  MacGPTKLauncher = "mac-gptk-launcher",
 }
 
 export enum GameArgSupport {
@@ -21,6 +23,8 @@ export function supportsGameArgs(method: LaunchMethod): GameArgSupport {
     case LaunchMethod.Windows:
       return GameArgSupport.True;
     case LaunchMethod.Linux:
+      return GameArgSupport.NoConsole;
+    case LaunchMethod.MacGPTK:
       return GameArgSupport.NoConsole;
     default:
       return GameArgSupport.False;

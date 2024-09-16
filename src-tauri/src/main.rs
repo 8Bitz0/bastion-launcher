@@ -6,6 +6,7 @@ use std::sync::Mutex;
 mod config;
 mod gfx_api;
 mod launch;
+mod misc;
 mod paths;
 
 #[derive(Default)]
@@ -26,6 +27,8 @@ fn main() {
       gfx_api::get_gfx_apis,
       launch::get_launch_methods,
       launch::launch,
+      misc::use_gptk,
+      misc::select_gptk,
       paths::install::get_install_paths,
     ])
     .run(tauri::generate_context!())
