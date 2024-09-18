@@ -7,10 +7,11 @@
   import WelcomePage from './WelcomePage.svelte';
   import ChooseInstall from './ChooseInstall.svelte';
   import SetupCompatTool from './SetupCompatTool.svelte';
+  import UnsupportedWarning from './UnsupportedWarning.svelte';
 
   export let page: number = 0;
   export let onFinish: () => void;
-  let lastPage: number = 1;
+  let lastPage: number = 2;
 
   let compatPage: boolean = false;
 
@@ -71,6 +72,8 @@
       }}
       />
     </div>
+  {:else if page == 3 && compatPage || page == 2 && !compatPage}
+    <UnsupportedWarning changeReadyState={(ready) => { nextButtonActive = ready }} />
   {/if}
 </div>
 <div class='flex justify-center items-center'>

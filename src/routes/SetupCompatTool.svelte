@@ -43,7 +43,7 @@
         {#if currentCompatPath}
           <p class='font-bold flex-grow text-nowrap overflow-hidden overflow-ellipsis'>{currentCompatPath}</p>
         {:else}
-          <p class='font-bold flex-grow text-slate-400 text-nowrap overflow-hidden overflow-ellipsis'>Select a folder...</p>
+          <p class='font-bold flex-grow text-slate-400 text-nowrap overflow-hidden overflow-ellipsis'>Select an app...</p>
         {/if}
       </div>
       <button on:click={selectCompatTool} class='flex h-full min-w-11 w-11 items-center justify-center bg-slate-800 border-l-2 border-slate-700 rounded-r-lg transition-all hover:bg-slate-300 hover:text-slate-800 hover:transition-all cursor-default'>
