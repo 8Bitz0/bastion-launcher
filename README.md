@@ -1,7 +1,18 @@
-# Tauri + SvelteKit + TypeScript
+# Bastion Launcher - Work In Progress
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
+## Development
 
-## Recommended IDE Setup
+Install NPM dependencies:
+```sh
+npm i
+```
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+Run:
+```sh
+npx tauri dev
+```
+
+Building:
+```sh
+npx tauri build
+```
